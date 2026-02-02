@@ -1,0 +1,17 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\phamw\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.3.0\\cores\\esp32"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "C:\\Users\\phamw\\AppData\\Local\\Arduino15\\packages\\esp32\\hardware\\esp32\\3.3.0\\variants\\esp32s3"
+  },
+  {
+    "Sourcefile": "C:\\Users\\phamw\\Desktop\\tank-circuit\\build\\sketch\\tank-circuit.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
