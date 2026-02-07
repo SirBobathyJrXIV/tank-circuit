@@ -13,10 +13,10 @@
 #define ESPNOW_WIFI_MODE WIFI_AP
 #define ESPNOW_WIFI_IF WIFI_IF_AP
 #endif
-
+//*/
 // Set the MAC address of the device that will receive the data
 // For example: F4:12:FA:40:64:4C
-const MacAddress peer_mac({0xEC, 0xDA, 0x3B, 0xBF, 0xED, 0x10}); //ec:da:3b:bf:ed:10 Pins C3
+const MacAddress peer_mac({0x98, 0x3D, 0xAE, 0x60, 0xCC, 0x78}); //ec:da:3b:bf:ed:10 Pins C3
 
 ESP_NOW_Serial_Class NowSerial(peer_mac, ESPNOW_WIFI_CHANNEL, ESPNOW_WIFI_IF);
 
@@ -48,12 +48,13 @@ void loop()
   if (NowSerial.available())
   {
     NowSerial.readBytes((byte*)&incoming_data, sizeof(incoming_data));
-    Serial.print(convert.toString(incoming_data.value1));
+    Serial.print(incoming_data.value1);
     Serial.print(" ");
-    Serial.print(convert.toString(incoming_data.value2));
+    Serial.print(incoming_data.value2);
     Serial.print(" ");
-    Serial.println(convert.toString(incoming_data.value3));
+    Serial.println(incoming_data.value3);
   }
+  //else Serial.println("Did not receive any data");
 
   delay(1);
 }
