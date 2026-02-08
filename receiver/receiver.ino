@@ -78,7 +78,7 @@ void setup()
   NowSerial.begin(115200); //start esp now serial communication
 }
 
-int remapJoystickValues(int raw, ind mod) {
+int remapJoystickValues(int raw, int mod) {
   int processed = map(abs(raw), 0, 4100, -255, 255)+mod;
   return processed;
 }
@@ -108,6 +108,40 @@ int procRight(int cx, int cy) {
   }
   // Left motor direction
 }*/
+
+void printResults(int xRaw, int yRaw, int tRaw, int xProc, int yProc, int tProc) {
+  Serial.print("Received: ");
+  Serial.print(xRaw);
+  Serial.print(" ");
+  Serial.print(yRaw);
+  Serial.print(" ");
+  Serial.println(tRaw);
+  Serial.print("Processed: ");
+  Serial.print(xProc);
+  Serial.print(" ");
+  Serial.print(yProc);
+  Serial.print(" ");
+  Serial.println(tProc);
+}
+void printMotorBar(const char* label, int speed) {
+  const int barLength = 13;  // Total characters in the bar
+  char bar[barLength + 1];
+  memset(bar, '.', barLength);
+  bar[barLength] = '\0';
+
+  int blocks = map(abs(speed), 0, 255, 0, barLength);
+
+  if (speed > 0) {
+    for (int i = 0; i < blocks; i++) bar[i] = '>';
+  } else if (speed < 0) {
+    for (int i = 0; i < blocks; i++) bar[barLength - 1 - i] = '<';
+  }
+
+  Serial.print(label);
+  Serial.print("[");
+  Serial.print(bar);
+  Serial.println("]");
+}
 void loop()
 {
   if (NowSerial.available())
@@ -116,18 +150,9 @@ void loop()
     int xProc = remapJoystickValues(incoming_data.vrx, 10);
     int yProc = remapJoystickValues(incoming_data.vry*-1, -12);
     int tProc = remapJoystickValues(incoming_data.turret, 0);
-    Serial.print("Received: ");
-    Serial.print(incoming_data.vrx);
-    Serial.print(" ");
-    Serial.print(incoming_data.vry);
-    Serial.print(" ");
-    Serial.println(incoming_data.turret);
-    Serial.print("Processed: ");
-    Serial.print(xProc);
-    Serial.print(" ");
-    Serial.print(yProc);
-    Serial.print(" ");
-    Serial.println(tProc);
+    printResults(incoming_data.vrx, incoming_data.vry, incoming_data.turret, xProc, yProc, tProc);
+    printMotorBar("RS", driveRightSpeed*-1);
+    printMotorBar("LS", driveLeftSpeed);
   }
 
   delay(45);
