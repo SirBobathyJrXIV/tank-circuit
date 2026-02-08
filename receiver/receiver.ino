@@ -83,10 +83,10 @@ int remapJoystickValues(int raw, int mod) {
   return processed;
 }
 
-/*int procLeft(int cx, int cy) {
+/*int procLeft(int xProc, int yProc) {
 
-  int driveLeftSpeed =  constrain(cy + cx, -255, 255)*-1;
-  if (abs(cy) >= abs(cx) && cy < 0) {
+  int driveLeftSpeed =  constrain(yProc + xProc, -255, 255)*-1;
+  if (abs(yProc) >= abs(xProc) && yProc < 0) {
     // Swap speeds if condition is false
     driveLeftSpeed = *-1;
     Serial.println("REVERSE");
@@ -94,13 +94,13 @@ int remapJoystickValues(int raw, int mod) {
   // Left motor direction
 }
 
-int procRight(int cx, int cy) {
+int procRight(int xProc, int yProc) {
   
- // Use xproc and yproc directly for motor control 
-  //int driveSpeed =  constrain(cy + cx, -255, 255)*-1;
-  int driveRightSpeed = constrain(cy - cx, -255, 255);
+ // Use xProc and yProc directly for motor control 
+  //int driveSpeed =  constrain(yProc + xProc, -255, 255)*-1;
+  int driveRightSpeed = constrain(yProc - xProc, -255, 255);
 
-  if (abs(cy) >= abs(cx) && cy < 0) {
+  if (abs(yProc) >= abs(xProc) && yProc < 0) {
     // Swap speeds if condition is false
     //driveLeftSpeed = rightSpeed*-1;
     driveRightSpeed = leftSpeed*-1;
@@ -108,6 +108,7 @@ int procRight(int cx, int cy) {
   }
   // Left motor direction
 }*/
+
 
 void printResults(int xRaw, int yRaw, int tRaw, int xProc, int yProc, int tProc) {
   Serial.print("Received: ");
@@ -147,13 +148,28 @@ void loop()
   if (NowSerial.available())
   {
     NowSerial.readBytes((byte*)&incoming_data, sizeof(incoming_data));
-    int xProc = remapJoystickValues(incoming_data.vrx, 10);
-    int yProc = remapJoystickValues(incoming_data.vry*-1, -12);
+    int xProc = remapJoystickValues(incoming_data.vrx, -40);
+    int yProc = remapJoystickValues(incoming_data.vry, -35)*-1;
     int tProc = remapJoystickValues(incoming_data.turret, 0);
     printResults(incoming_data.vrx, incoming_data.vry, incoming_data.turret, xProc, yProc, tProc);
+
+
+    int leftSpeed = constrain(yProc + xProc, -255, 255)*-1;
+  int rightSpeed = constrain(yProc - xProc, -255, 255);
+
+  int driveLeftSpeed = leftSpeed;
+  int driveRightSpeed = rightSpeed;
+
+  if (abs(yProc) >= abs(xProc) && yProc < 0) {
+    // Swap speeds if condition is false
+    driveLeftSpeed = rightSpeed*-1;
+    driveRightSpeed = leftSpeed*-1;
+    Serial.println("REVERSE");
+
+
+  }
     printMotorBar("RS", driveRightSpeed*-1);
     printMotorBar("LS", driveLeftSpeed);
   }
-
   delay(45);
 }
