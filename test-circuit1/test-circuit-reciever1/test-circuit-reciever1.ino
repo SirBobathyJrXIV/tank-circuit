@@ -14,9 +14,8 @@
 #define ESPNOW_WIFI_IF WIFI_IF_AP
 #endif
 //*/
-// Set the MAC address of the device that will receive the data
-// For example: F4:12:FA:40:64:4C
-const MacAddress peer_mac({0x98, 0x3D, 0xAE, 0x60, 0xCC, 0x78}); //ec:da:3b:bf:ed:10 Pins C3
+// Set the MAC address of the device that will transmit the data
+const MacAddress peer_mac({0x30, 0xED, 0xA0, 0x20, 0xB5, 0xFC}); //this is transmitter mac addr
 
 ESP_NOW_Serial_Class NowSerial(peer_mac, ESPNOW_WIFI_CHANNEL, ESPNOW_WIFI_IF);
 
