@@ -9,8 +9,8 @@
 #define ESPNOW_WIFI_IF WIFI_IF_STA
 int msg_ct = 0;
 
-
-const MacAddress peer_mac({0x98, 0x3D, 0xAE, 0x60, 0xCC, 0x78});
+//put receiver mac addr here
+const MacAddress peer_mac({0x98, 0x3D, 0xAE, 0x60, 0xCC, 0x78}); //receiver mac addr 
 ESP_NOW_Serial_Class NowSerial(peer_mac, ESPNOW_WIFI_CHANNEL, ESPNOW_WIFI_IF);
 
 struct data_packet
@@ -24,9 +24,22 @@ data_packet outgoing_data = { 0, 0, 0 };
 unsigned long last_send_time = 0;
 const unsigned long SEND_INTERVAL = 1000;
 
+void readMacAddress(){
+  uint8_t baseMac[6];
+  esp_err_t ret = esp_wifi_get_mac(WIFI_IF_STA, baseMac);
+  if (ret == ESP_OK) {
+    Serial.printf("%02x:%02x:%02x:%02x:%02x:%02x\n",
+                  baseMac[0], baseMac[1], baseMac[2],
+                  baseMac[3], baseMac[4], baseMac[5]);
+  } else {
+    Serial.println("Failed to read MAC address");
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
+  readMacAddress();
   while (!Serial)
   {
     delay(100);
