@@ -74,7 +74,7 @@ void loop()
     
     outgoing_data = { vrx, vry, turret };
     NowSerial.write((byte*)&outgoing_data, sizeof(outgoing_data));
-    Serial.print("Transmitted: ");
+    Serial.println("Transmitted: ");
     //Serial.println(msg_ct);
     //msg_ct++;
     last_send_time = current_time;
