@@ -7,10 +7,10 @@
 #define ESPNOW_WIFI_CHANNEL 1
 #define ESPNOW_WIFI_MODE WIFI_STA
 #define ESPNOW_WIFI_IF WIFI_IF_STA
-  int msg_ct = 0;
+int msg_ct = 0;
 
 
-const MacAddress peer_mac({0x02, 0x3D, 0xAE, 0x60, 0xCC, 0x78});
+const MacAddress peer_mac({0x98, 0x3D, 0xAE, 0x60, 0xCC, 0x78});
 ESP_NOW_Serial_Class NowSerial(peer_mac, ESPNOW_WIFI_CHANNEL, ESPNOW_WIFI_IF);
 
 struct data_packet
